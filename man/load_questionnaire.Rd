@@ -5,7 +5,7 @@
 \title{load_questionnaire}
 \usage{
 load_questionnaire(data, questions.file, choices.file,
-  choices.label.column.to.use = "label..English")
+  choices.label.column.to.use = NULL)
 }
 \arguments{
 \item{data}{data frame containing the data matching the questionnaire to be loaded.}

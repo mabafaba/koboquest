@@ -96,7 +96,7 @@ load_questionnaire<-function(data,
 
     # make functions that need questionnaire
 
-   question_get_choice_labels <<- function(responses,variable.name){
+   question_get_choice_labels <- function(responses,variable.name){
 
      variable.name<-as.character(variable.name)
      responses<-as.character(responses)
@@ -113,7 +113,8 @@ load_questionnaire<-function(data,
       }
      return(responses)
    }
-   question_get_question_label<<-function(variable.names){
+
+   question_get_question_label<-function(variable.names){
      variable.names<-as.character(variable.names)
 
      labelcol<-grep("label",names(questions))[1]
@@ -129,7 +130,7 @@ load_questionnaire<-function(data,
 
 
 
-    question_is_numeric <<- function(question.name){
+    question_is_numeric <- function(question.name){
       if(is.null(question.name)){return(FALSE)}
       if(is.na(question.name)){return(FALSE)}
       if(question.name==""){return(FALSE)}
@@ -140,7 +141,7 @@ load_questionnaire<-function(data,
     }
 
 
-    question_is_select_one <<- function(question.name){
+    question_is_select_one <- function(question.name){
       if(is.null(question.name)){return(FALSE)}
       if(is.na(question.name)){return(FALSE)}
       if(question.name==""){return(FALSE)}
@@ -150,7 +151,7 @@ load_questionnaire<-function(data,
       return(FALSE)
     }
 
-    question_is_select_multiple <<- function(question.name){
+    question_is_select_multiple <- function(question.name){
       if(is.null(question.name)){return(FALSE)}
       if(is.na(question.name)){return(FALSE)}
       if(question.name==""){return(FALSE)}
@@ -160,61 +161,31 @@ load_questionnaire<-function(data,
       return(FALSE)
     }
 
-    question_is_categorical <<- function(question.name){
+    question_is_categorical <- function(question.name){
       if(is.null(question.name)){return(FALSE)}
       if(is.na(question.name)){return(FALSE)}
       if(question.name==""){return(FALSE)}
       return(question_is_select_one(question.name) | question_is_select_multiple(question.name))
     }
 
-    question_in_questionnaire <<- function(question.name){
+    question_in_questionnaire <- function(question.name){
       if(sum(question.name %in% questions$name) > 0){
         return(TRUE)}
       return(FALSE)
     }
 
-    question_is_skipped <<- function(data, question.name){
+    question_is_skipped <- function(data, question.name){
       qid<-which(questions$name==question.name)
       condition<-questions$relevant[qid[1]]
       question_is_skipped_apply_condition_to_data(data,condition)
     }
 
-
-    is_questionnaire_loaded<<-function(){return(TRUE)
-    }
-
-
-
-    # message(blue("load_questionnaire() activated the following functions:
-    #
-    #
-    #          identifying data type:
-    #
-    #          question_is_numeric()
-    #          question_is_categorical()
-    #          question_is_categorical()
-    #          question_is_select_one()
-    #          question_is_select_multiple()
-    #          question_variable_type()
-    #
-    #          labels:
-    #          question_get_choice_labels()
-    #          question_get_question_label()
-    #
-    #          skiplogic:
-    #          question_is_skipped()"))
     questionnaire_is_loaded <- TRUE
 
     is_questionnaire_loaded<-function(){return(TRUE)}
 
 
-    # select_multiple_names<-names(data)[question_is_select_multiple(names(data))]
-    # sm_choice_varnames<-lapply(select_multiple_names,function(sm_varname){
-    #   paste(sm_varname,choices_per_data_column[[sm_varname]]$name,sep=".")
-    # })
-    # questions$type[(questions$name %in% sm_choice_varnames) & is.na(questions$type)]<-"sm_choice"
-
-    question_is_sm_choice<<-function(question.name){
+    question_is_sm_choice<-function(question.name){
       if(is.null(question.name)){return(FALSE)}
       if(is.na(question.name)){return(FALSE)}
       if(question.name==""){return(FALSE)}
@@ -231,63 +202,50 @@ load_questionnaire<-function(data,
       return(FALSE)
     }
 
-    return(c(list(questions=questions,choices=choices,choices_per_variable=choices_per_data_column), data))
+
+
+    update.internal.package.function<-function(new.fun.name,
+                                               internal_fun_name_prefix="",
+                                               internal_fun_name_suffix="_internal",
+                                               package="koboquest"){
+      assignInNamespace(x = paste0(internal_fun_name_prefix,new.fun.name,internal_fun_name_suffix), ns=package, new.fun.name)
+    }
+
+
+    sapply(c("question_get_choice_labels",
+    "question_get_question_label",
+    "question_is_numeric",
+    "question_is_select_one",
+    "question_is_select_multiple",
+    "question_is_categorical",
+    "question_in_questionnaire",
+    "question_is_skipped",
+    "is_questionnaire_loaded",
+    "question_is_sm_choice"),update.internal.package.function)
+
+    return(c(list(questions=questions,choices=choices,choices_per_variable=choices_per_data_column), list(data),,question_get_choice_labels,
+             question_get_question_label,
+             question_is_numeric,
+             question_is_select_one,
+             question_is_select_multiple,
+             question_is_categorical,
+             question_in_questionnaire,
+             question_is_skipped,
+             is_questionnaire_loaded,
+             question_is_sm_choice))
 
     }
 
 
-
-question_get_choice_labels<-function(responses,variable.name){
-      stop("you must successfully run load_questionnaire() first")
-
-    }
-
-
-    question_get_question_label<-function(variable.name){
-      stop("you must successfully run load_questionnaire() first")
-    }
-
-    question_is_numeric<-function(question.name){
-      stop("you must successfully run load_questionnaire() first")
-    }
-
-
-    question_is_select_one<-function(question.name){
-      stop("you must successfully run load_questionnaire() first")
-
-    }
-    question_is_select_multiple<-function(question.name){
-      stop("you must successfully run load_questionnaire() first")
-
-    }
-
-    question_is_sm_choice<-function(question.name){
-      stop("you must successfully run load_questionnaire() first")
-
-    }
-    question_is_categorical<-function(question.name){
-      stop("you must successfully run load_questionnaire() first")
-    }
-
-    is_questionnaire_loaded<-function(){return(FALSE)
-    }
-
-    question_in_questionnaire <- function(question.name){return(FALSE)
-    }
-
-    question_is_skipped<-function(data, variable.name){
-      stop("you must successfully run load_questionnaire() first")
-    }
 
 #' variable_type
 #'
 #' @param variables the vector or value for which the type should be determined
 #' @return a vector or value with variable types
 #' @seealso
-#' @export
 #' @examples
 #'
-question_variable_type_from_questionnaire <- function(variables){
+question_type_from_questionnaire <- function(variables){
     variable_types <- as.vector(sapply(variables, function(x){
       # if(question_is_categorical(x)){return("categorical")}
       if(question_is_select_multiple(x)){return("select_multiple")}
@@ -301,11 +259,43 @@ question_variable_type_from_questionnaire <- function(variables){
     }
 
 
+#' question_data_type
+#'
+#' @param variables the vector or value for which the type should be determined
+#' @return a vector or value with variable types
+#' @seealso
+#' @export
+#' @examples
+#'
+question_type<-function(variable.name,data=NULL,from.questionnaire=T,from.data=T){
+  if(!from.questionnaire & !from.data){stop("at least one of 'from.questionnaire' or 'from.data' parameters must be 'TRUE'.")}
+    if(!is.null(data) & from.data & !from.questionnaire){
+      stop("to infer data types from data, provide 'data' parameter. alternatively, use 'from.questionnaire'.")
+    }
+  if(from.questionnaire & !from.data & !is_questionnaire_loaded()){
+    stop("to infer data from questionnaire, successfully run load_questionnaire(...) first.")
+  }
+    ### try to determine question type from questionnaire:
+  if(from.questionnaire & is_questionnaire_loaded()){
+      if(question_in_questionnaire(variable.name)){
+        type.from.q<-question_variable_type_from_questionnaire(variable.name)
+        # if succesfull, we're done here:
+        if(!is.na(type.from.q)){return(type.from.q)}
+        }
+  }
+    # if from questionnaire failed but from.data=F, we shouldn't be here:
+    if(from.questionnaire & !from.data){
+      stop(paste(variable.name), "'s type could not be determined from questionnaire.
+           provide 'data' parameter and set from.data to 'TRUE' to infer the type from the data.")
+      }
+    # Guess from data:
 
+    if(!all(variable.name%in%names(data))){stop("Can not determine the data type: it's neither in the questionnaire nor in the data column headers")}
+    if(is.numeric(data[[variable.name]])){return("numeric")}
+    if(is.numeric.fuzzy(data[[variable.name]], 0.9)){return("numeric")}
+    return("select_one")
 
-
-
-
+  }
 
 add_group_conditions_to_question_conditions<-function(questions){
   group_conditions<-NULL
@@ -343,14 +333,8 @@ add_group_conditions_to_question_conditions<-function(questions){
     all_condition_for_this_q_combined<-paste(all_condition_for_this_q,collapse=" and ")
     conditions<-c(conditions,all_condition_for_this_q_combined)
   }
-
-
-
   conditions
 }
-
-
-
 
 read.csv.auto.sep<-function(file,stringsAsFactors=F,...){
   df<-fread(file,stringsAsFactors=stringsAsFactors,...) %>% as.data.frame
