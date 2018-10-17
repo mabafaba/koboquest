@@ -32,7 +32,7 @@
 
 .dependencies<-c("dplyr","ggplot2","ggthemes","reshape2","questionr")
 .install_dependencies(.dependencies)
-.install_reachR(reinstall_if_exists = F)
+.install_koboquest(reinstall_if_exists = F)
 .load_dependencies(c(.dependencies,"reachR"))
 
 

@@ -1,4 +1,4 @@
-getwd()
+# getwd()
 # setwd("../koboquest/")
 setwd("./tests/testthat/")
 library(testthat)
