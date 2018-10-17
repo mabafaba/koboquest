@@ -208,7 +208,8 @@ load_questionnaire<-function(data,
                                                internal_fun_name_prefix="",
                                                internal_fun_name_suffix="_internal",
                                                package="koboquest"){
-      assignInNamespace(x = paste0(internal_fun_name_prefix,new.fun.name,internal_fun_name_suffix), ns=package, new.fun.name)
+      internal.function.name<-paste0(internal_fun_name_prefix,new.fun.name,internal_fun_name_suffix)
+      assignInNamespace(x = internal.function.name, ns=package, value= get(new.fun.name))
     }
 
 

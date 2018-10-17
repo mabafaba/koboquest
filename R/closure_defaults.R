@@ -32,6 +32,7 @@ is_questionnaire_loaded<-function(){
 question_in_questionnaire <- function(question.name){
   question_in_questionnaire_internal(question.name)
 }
+
 #'@export
 question_is_skipped<-function(data, variable.name){
   question_is_skipped_internal(data, variable.name)

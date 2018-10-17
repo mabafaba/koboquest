@@ -30,9 +30,14 @@ roxygenize(clean=T)
 this_script_path<-(dirname(rstudioapi::getActiveDocumentContext()$path))
 setwd(this_script_path)
 build()
+
 source("./dependencies_koboquest.R")
 .install_koboquest(T)
+rm(list=ls())
 require(koboquest)
+
+question_in_questionnaire(asdf)
+
 devtools::test()
 
 
