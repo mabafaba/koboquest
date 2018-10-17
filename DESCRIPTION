@@ -4,7 +4,6 @@ Version: 0.0.0.9000
 Authors@R: person("Martin", "Barner", email = "martin.barner@impact-initiatives.org", role = c("aut", "cre"))
 Description: Use kobo questionnaires to identify data types, parse skip logic and apply labels. 
 Depends:
-  stringr
   dplyr
   data.table
 License: What license is it under?
