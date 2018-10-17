@@ -24,15 +24,15 @@ require("roxygen2")
 require("devtools")
 roxygenize(clean=T)
 }
-getwd()
 
+
+
+this_script_path<-(dirname(rstudioapi::getActiveDocumentContext()$path))
+setwd(this_script_path)
 build()
-setwd("/Visitor/koboquest/")
+source("./dependencies_koboquest.R")
+.install_koboquest(T)
 devtools::test()
-getwd()
-
-source("./dependencies.R")
-
 
 
 

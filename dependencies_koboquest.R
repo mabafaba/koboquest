@@ -8,18 +8,18 @@
   if(length(new.packages)) install.packages(new.packages)
   return(packages.to.install)
 }
-# install reachR
+# install koboquest
 
-.install_reachR<-function(reinstall_if_exists = F, branch="master"){
-  if(!.is.package.installed("reachR") | reinstall_if_exists){
+.install_koboquest<-function(reinstall_if_exists = F, branch="master"){
+  if(!.is.package.installed("koboquest") | reinstall_if_exists){
     # get devtools if needed
     if(!.is.package.installed("devtools")){install.packages("devtools")}
     require("devtools")
-    install_github("mabafaba/reachR2",ref = branch)
+    install_github("mabafaba/koboquest",ref = branch)
     # unload devtools
     detach("package:devtools", unload=TRUE)
     if(reinstall_if_exists){
-      warning("Please restart R session to update reachR documentation")
+      warning("Please restart R session to update koboquest documentation")
     }
   }
 }
@@ -38,4 +38,4 @@
 
 dependencies_spatial<-c("rgdal","raster","RgoogleMaps","ggmap","gstat")
 dependencies_spatial %>% .install_dependencies %>% .load_dependencies
-
+.install_koboquest()

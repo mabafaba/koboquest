@@ -223,19 +223,19 @@ load_questionnaire<-function(data,
     "is_questionnaire_loaded",
     "question_is_sm_choice"),update.internal.package.function)
 
-    return(c(list(questions=questions,choices=choices,choices_per_variable=choices_per_data_column), list(data),,question_get_choice_labels,
-             question_get_question_label,
-             question_is_numeric,
-             question_is_select_one,
-             question_is_select_multiple,
-             question_is_categorical,
-             question_in_questionnaire,
-             question_is_skipped,
-             is_questionnaire_loaded,
-             question_is_sm_choice))
+    return(c(list(questions=questions,choices=choices,choices_per_variable=choices_per_data_column), list(data),
+             question_get_choice_labels=question_get_choice_labels,
+             question_get_question_label=question_get_question_label,
+             question_is_numeric=question_is_numeric,
+             question_is_select_one=question_is_select_one,
+             question_is_select_multiple=question_is_select_multiple,
+             question_is_categorical=question_is_categorical,
+             question_in_questionnaire=question_in_questionnaire,
+             question_is_skipped=question_is_skipped,
+             is_questionnaire_loaded=is_questionnaire_loaded,
+             question_is_sm_choic=question_is_sm_choice))
 
     }
-
 
 
 #' variable_type
