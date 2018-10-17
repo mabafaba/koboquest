@@ -32,6 +32,7 @@ setwd(this_script_path)
 build()
 source("./dependencies_koboquest.R")
 .install_koboquest(T)
+require(koboquest)
 devtools::test()
 
 
