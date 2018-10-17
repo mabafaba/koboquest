@@ -19,7 +19,7 @@ question_is_skipped_apply_condition_to_data<-function(data,condition){
 
 # make sure all variable names all exist in the data
   if(!all(condition_varnames_standardised %in% names(data))){stop(paste0(
-    "can't parse skiplogic: variable names not found:\n",paste(condition_varnames_standardised[condition_varnames_standardised%in%names(data)],collapse="\n"))
+    "can't parse skiplogic: variable names not found:\n",paste(condition_varnames_standardised[!(condition_varnames_standardised%in%names(data))],collapse="\n"))
   )}
 
   # parse the condition into an R expression:

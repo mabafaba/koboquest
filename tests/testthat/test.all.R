@@ -4,5 +4,8 @@ setwd("./tests/testthat/")
 library(testthat)
 library(koboquest)
 source("./test_utilities.R")
+context("load_questionnaire")
 test_file("./test_load_questionnaire_m.R")
+context("skiplogic")
 test_file("./test_questionnaire_skiplogic.R")
+is_questionnaire_loaded_internal<-function(x){TRUE}
