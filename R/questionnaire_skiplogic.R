@@ -102,8 +102,8 @@ rify_selected<-function(x){
 
 rify_isolated_selected_condition<-function(x){
   selected_start_pattern<-"selected[[:space:]]*\\([[:space:]]*\\$\\{"
-  selected_middle_pattern<-'\\}[[:space:]]*,[[:space:]]*["]*'
-  selected_end_pattern<-"\"*\\)"
+  selected_middle_pattern<-'\\}[[:space:]]*,[[:space:]]*["\']*'
+  selected_end_pattern<-'["\']*\\)'
   gsub(selected_start_pattern,"",x) %>% gsub(selected_middle_pattern,'==\"',.) %>% gsub(selected_end_pattern,"\"",.) %>% paste0("(",.,")")
 }
 
