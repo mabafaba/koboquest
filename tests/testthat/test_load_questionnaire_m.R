@@ -1,4 +1,4 @@
-context("load_questionnaire")
+context("load questionnaire")
 test_that("load_questionnaire: fail on bad input",{
   example1<-load.example("example1")
 

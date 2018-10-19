@@ -34,8 +34,9 @@ build()
 source("./dependencies_koboquest.R")
 .install_koboquest(T)
 rm(list=ls())
+detach("package:koboquest")
+detach("package:reachR")
 require(koboquest)
-
 devtools::test()
 
 

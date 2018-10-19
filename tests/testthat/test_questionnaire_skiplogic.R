@@ -1,5 +1,5 @@
 
-context("Skip Logic: basics")
+context("skiplogic")
 
 test_that("question_is_skipped_apply_condition_to_data works",{
   example<-load.example("example1",F)
