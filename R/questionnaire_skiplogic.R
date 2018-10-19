@@ -92,11 +92,12 @@ rify_selected<-function(x){
   selected_expressions_replacements<-sapply(selected_expressions,rify_isolated_selected_condition) %>% unname
   # replace in condition string
   for(i in seq_along(selected_expressions)){
-    x<-sub(selected_total_pattern,selected_expressions_replacements,x)
+    x<-sub(pattern = selected_total_pattern,
+           replacement = selected_expressions_replacements[i],
+           x = x)
   }
   x
 }
-
 
 
 rify_isolated_selected_condition<-function(x){
