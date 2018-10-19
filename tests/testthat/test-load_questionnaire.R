@@ -1,3 +1,4 @@
+source("./utilities_for_t.R")
 context("load questionnaire")
 test_that("load_questionnaire: fail on bad input",{
   example1<-load.example("example1")

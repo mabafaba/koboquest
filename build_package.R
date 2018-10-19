@@ -36,12 +36,9 @@ source("./dependencies_koboquest.R")
 rm(list=ls())
 detach("package:koboquest")
 detach("package:reachR")
-require(koboquest)
-devtools::test()
-
-
-
-
+getwd()
+devtools::load_all("../koboquest")
+devtools::test("../koboquest")
 
 
 
