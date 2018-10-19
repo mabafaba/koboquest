@@ -83,8 +83,8 @@ rify_selected<-function(x){
   varname_chars_pattern<-"[A-z0-9_\\.]*"
   choices_chars_pattern<-"[a-z0-9_]*"
   selected_start_pattern<-"selected[[:space:]]*\\([[:space:]]*\\$\\{"
-  selected_middle_pattern<-'\\}[[:space:]]*,[[:space:]]*["]*'
-  selected_end_pattern<-"\"*\\)"
+  selected_middle_pattern<-"\\}[[:space:]]*,[[:space:]]*[\"']*"
+  selected_end_pattern<-"[\"']*\\)"
   selected_total_pattern<-paste0(selected_start_pattern,varname_chars_pattern,selected_middle_pattern,choices_chars_pattern,selected_end_pattern)
   # find all selected conditions
   selected_expressions<-str_extract_all(x,selected_total_pattern) %>% unlist

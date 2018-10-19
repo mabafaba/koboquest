@@ -36,8 +36,6 @@ source("./dependencies_koboquest.R")
 rm(list=ls())
 require(koboquest)
 
-question_in_questionnaire(asdf)
-
 devtools::test()
 
 
