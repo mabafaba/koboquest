@@ -338,7 +338,8 @@ add_group_conditions_to_question_conditions<-function(questions){
 }
 
 read.csv.auto.sep<-function(file,stringsAsFactors=F,...){
-  df<-fread(file,stringsAsFactors=stringsAsFactors,...) %>% as.data.frame
+  # df<-fread(file,stringsAsFactors=stringsAsFactors,...) %>% as.data.frame
+  df<-read.csv(file,stringsAsFactors = F)
   df<-to_alphanumeric_lowercase_colnames_df(df)
   return(df)
 }
