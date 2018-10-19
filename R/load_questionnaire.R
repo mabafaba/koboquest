@@ -279,7 +279,7 @@ question_type<-function(variable.name,data=NULL,from.questionnaire=T,from.data=T
     ### try to determine question type from questionnaire:
   if(from.questionnaire & is_questionnaire_loaded()){
       if(question_in_questionnaire(variable.name)){
-        type.from.q<-question_variable_type_from_questionnaire(variable.name)
+        type.from.q<-question_type_from_questionnaire(variable.name)
         # if succesfull, we're done here:
         if(!is.na(type.from.q)){return(type.from.q)}
         }
