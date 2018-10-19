@@ -17,8 +17,7 @@ test_that("question_is_skipped_apply_condition_to_data works",{
                    "uasc","(2)*(0+(1+${total_children}+${total_children})-1)/4>3 and (${disabled_chronic}>0)", "(2)*(0+(1+total_children+total_children)-1)/4>3 & (disabled_chronic>0)"
 
   ) %>%
-    matrix(3,byrow=F) %>% t %>% as.data.frame(stringsAsFactors=F) %>% set_colnames(c("var","condition","manual_calculation"))
-
+    matrix(3,byrow=F) %>% t %>% as.data.frame(stringsAsFactors=F) %>% `colnames<-`(c("var","condition","manual_calculation"))
   skip_example_solutions<-apply(skip_examples,1,function(x){
     !eval(parse(text=x["manual_calculation"]))
   })
