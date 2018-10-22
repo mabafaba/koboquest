@@ -13,7 +13,6 @@ build<-function(){
 
 rm(list=ls())
 
-# detach("package:reachR")
 this_script_path<-(dirname(rstudioapi::getActiveDocumentContext()$path))
 setwd(this_script_path)
 
@@ -30,16 +29,8 @@ roxygenize(clean=T)
 this_script_path<-(dirname(rstudioapi::getActiveDocumentContext()$path))
 setwd(this_script_path)
 build()
-
-source("./dependencies_koboquest.R")
-.install_koboquest(T)
-rm(list=ls())
-detach("package:koboquest")
-detach("package:reachR")
-getwd()
-devtools::load_all("../koboquest")
+# setwd("../../")
+# devtools::load_all("../koboquest")
 devtools::test("../koboquest")
-
-
-
-
+devtools::load_all("../koboquest")
+require("devtools");install_github("mabafaba/koboquest",quiet = T);detach("package:devtools")

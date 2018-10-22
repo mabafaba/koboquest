@@ -78,13 +78,16 @@ load_questionnaire<-function(data,
   }
 
       questions <- questions[match(data_colnames, questions$name),]
-
+        if(length(grep("^list[\\._]name$","list_name",value=T))<1){stop("kobo 'choices' sheet must have a column named 'list.name' or 'list_name'")}
         choices_per_data_column<-questions$type %>% as.character %>% strsplit(" ") %>% lapply(unlist)%>% lapply(function(x){
 
         x %>% lapply(function(y){
         # grep(y,choices[["list_name"]],value=F)
         # match (full word only)
-        grep(paste0(" ",y," "),paste0(" ",choices[["list.name"]]," "),value=F,fixed = T)
+        grep(paste0(" ",y," "),
+             paste0(" ",
+                    choices[[grep("^list[\\._]name$",names(choices),value=T)[1]]]
+                    ," "),value=F,fixed = T)
 
       }
       ) %>% unlist
@@ -169,6 +172,10 @@ load_questionnaire<-function(data,
     }
 
     question_in_questionnaire <- function(question.name){
+      if(is.null(question.name)){stop("question.name can not be NULL")}
+      if(question.name %in% c(NA,"","N/A","NA")){stop("question.name can not be empty")}
+      if(length(question.name)!=1){stop("question_in_questionnaire() takes only a single variable name as input")}
+
       if(sum(question.name %in% questions$name) > 0){
         return(TRUE)}
       return(FALSE)
@@ -270,9 +277,13 @@ question_type_from_questionnaire <- function(variables){
 #'
 question_type<-function(variable.name,data=NULL,from.questionnaire=T,from.data=T){
   if(!from.questionnaire & !from.data){stop("at least one of 'from.questionnaire' or 'from.data' parameters must be 'TRUE'.")}
-    if(!is.null(data) & from.data & !from.questionnaire){
+    if(is.null(data) & from.data & !from.questionnaire){
       stop("to infer data types from data, provide 'data' parameter. alternatively, use 'from.questionnaire'.")
+
     }
+
+
+
   if(from.questionnaire & !from.data & !is_questionnaire_loaded()){
     stop("to infer data from questionnaire, successfully run load_questionnaire(...) first.")
   }

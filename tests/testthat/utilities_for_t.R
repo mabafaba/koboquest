@@ -34,7 +34,7 @@ read.example.csv<-function(filename,examplename){
 }
 
 
-load.example<-function(name="example1",global_space=F){
+load.example<-function(name="example1",global_space=F,with_questionnaire=T){
 
 
   ex<-example_metadata[which(example_names==name),,drop=F] %>% as.list
@@ -47,10 +47,12 @@ load.example<-function(name="example1",global_space=F){
   }
 
   ex$data<-exfile("data.csv")
+  if(with_questionnaire){
   ex$questionnaire<-load_questionnaire(ex$data,
                                         questions.file = exfilepath("kobo questions.csv"),
                                         choices.file = exfilepath("kobo choices.csv"),
                                         choices.label.column.to.use = ex$choice.label.column.to.use)
+  }
 
   ex$tf <- data.frame("dependent.var" = c("population_group", "when_continue", "males_13_15","uasc_boys", "household_expenditure", "sep_accidental", "bla", NA, NA),
                                     "independent.var" = c("district_localadmin", "when_continue", "children_0_4", "uasc_girls", "household_expenditure", "sep_forced", "hehe", NA, NA))  %>% t %>% as.data.frame(., stringsAsFactors = F)
@@ -60,7 +62,10 @@ load.example<-function(name="example1",global_space=F){
 
   if(global_space){
     data<-ex$data
-    questionnaire<-ex$questionnaire
+    if(with_questionnaire){
+      questionnaire<-ex$questionnaire
+    }
+
     return(NULL)
   }
 

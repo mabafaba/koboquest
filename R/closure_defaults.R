@@ -78,5 +78,6 @@ is_questionnaire_loaded_internal<-function(){return(FALSE)
 question_in_questionnaire_internal <- function(question.name){return(FALSE)}
 
 question_is_skipped_internal<-function(data, variable.name){
-  stop("you must successfully run load_questionnaire() first")
+  warning("questionnaire not loaded. Assuming not skipped for all.")
+  return(rep(FALSE,nrow(data)))
 }
