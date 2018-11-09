@@ -10,7 +10,8 @@ question_is_sm_choice(question.name)
 \item{question.name}{The xml name of a kobo question as a string. (as it appears in the kobo questionnaire and subsequently in the data column headers)}
 }
 \value{
-\code{TRUE} if the question is listed as a select_multiple type in the questionnaire. \code{FALSE} if the question is listed as a different type. \code{FALSE} if the question type could not be determined from the questionnaire.
+\code{TRUE} if the question is listed as a logical column relating to a select_multiple type question in the questionnaire.
+ \code{FALSE} if it isn't. \code{FALSE} if this could not be determined from the questionnaire.
 }
 \description{
 Determine if a data column header is a logical choice column of a select_multiple question
@@ -25,10 +26,10 @@ If type identification fails, the default return value is \code{FALSE}.This happ
 }
 }
 \examples{
-question_is_select_multiple("some_numeric_kobo_xml_question_name") # FALSE
-question_is_select_multiple("a_select_multiple_kobo_xml_question_name") # TRUE
-question_is_select_multiple("a_select_one_kobo_xml_question_name") # FALSE
-question_is_numeric("some_unidentified_string") # FALSE
+question_is_sm_choice("a_select_multiple_question_name.a_choice_name") # TRUE
+question_is_sm_choice("a_question_name") # FALSE
+question_is_sm_choice("a_select_one_question_name") # FALSE
+question_is_sm_choice("some_unidentified_string") # FALSE
 }
 \seealso{
 \code{\link{load_questionnaire}} must be run first.

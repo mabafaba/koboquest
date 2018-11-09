@@ -12,13 +12,13 @@ For data collected with \href{https://www.kobotoolbox.org/}{kobotoolbox}, \href{
 This package lets you load a questionnaire and match it with the data. It then provides three main functionalities:
 
 \itemize{
-\item identifying questionnaire data types
-\item converting xml names to labels
-\item parsing questionnaire skiplogic (XLSForm 'relevant' column)
+\item identifying question types
+\item converting xml style data headers and values to labels
+\item parsing questionnaire skiplogic ('relevant' column in XLSForms.)
 }
 
 A questionnaire (in .csv format) is loaded globally with \code{\link{load_questionniare}}.
-All other functions then refer to that questionnaire automatically. (see below on using multiple questionnaires in parallel)
+All other functions then refer to that questionnaire automatically. (See below on using multiple questionnaires in parallel.)
 }
 \section{Identifying question types}{
 
