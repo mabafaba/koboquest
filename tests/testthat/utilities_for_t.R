@@ -49,8 +49,8 @@ load.example<-function(name="example1",global_space=F,with_questionnaire=T){
   ex$data<-exfile("data.csv")
   if(with_questionnaire){
   ex$questionnaire<-load_questionnaire(ex$data,
-                                        questions.file = exfilepath("kobo questions.csv"),
-                                        choices.file = exfilepath("kobo choices.csv"),
+                                        questions.file = exfilepath("kobo_questions.csv"),
+                                        choices.file = exfilepath("kobo_choices.csv"),
                                         choices.label.column.to.use = ex$choice.label.column.to.use)
   }
 

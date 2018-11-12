@@ -2,7 +2,14 @@
 % Please edit documentation in R/closure_defaults.R
 \name{question_get_choice_labels}
 \alias{question_get_choice_labels}
-\title{Convert kobo xml choice names to labels}
+\title{what is this?
+This package is using a specific kind of closures
+The factory is defined, but also the produced functions are *defined* and *documented* as part of the package.
+That allows us to make functions available once data is loaded, but still provide defaults for those functions and document them with vingnettes
+They consist of three parts:
+1. The exported function; it calls an internal function that is not exported and therefore editable by the factory
+2. A default for the internal function; usually throws and error or does some simple default behaviour
+3. A factory; the factory fills the internal function with it's main code once the factory is called.}
 \usage{
 question_get_choice_labels(responses, variable.name)
 }
@@ -16,9 +23,13 @@ Should be a question of type 'select_one' or 'select_multiple'.}
 A vector of strings with labels corresponding to the choices supplied in \code{responses}.
 }
 \description{
-Uses a loaded kobo questionnaire to get the labels of select_one and select_multiple type questions.
+Here we define 1. and 2.
+All of the closures here are fabricated by load_questionnaire().
+Convert kobo xml choice names to labels
 }
 \details{
+Uses a loaded kobo questionnaire to get the labels of select_one and select_multiple type questions.
+
 To use this you must first successfully run \code{\link{load_questionnaire}}.
 If conversion of a value in \code{responses} fails, the original input value is returned. This happens in the following cases:
 \itemize{

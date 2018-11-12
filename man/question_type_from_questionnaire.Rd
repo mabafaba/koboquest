@@ -15,6 +15,6 @@ a vector or value with variable types
 \description{
 variable_type
 }
-\examples{
-
+\details{
+workhorse for question_type(). Returns NA if no type could be determined, or if type is not one of 'select_one', 'select_multiple', 'numeric'.
 }

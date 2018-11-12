@@ -4,7 +4,7 @@ to_alphanumeric_lowercase_colnames_df <- function(df){
   return(df)
 }
 
-#' read csv files independent from csv type; default stringsAsFactors to false
+# read csv files independent from csv type; default stringsAsFactors to false
 read.csv.auto.sep<-function(file,stringsAsFactors=F,...){
   df<-fread(file,stringsAsFactors=stringsAsFactors,...) %>% as.data.frame
   df<-to_alphanumeric_lowercase_colnames_df(df)

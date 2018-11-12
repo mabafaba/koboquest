@@ -10,7 +10,7 @@
 #'   \item parsing questionnaire skiplogic ('relevant' column in XLSForms.)
 #' }
 #'
-#' A questionnaire (in .csv format) is loaded globally with \code{\link{load_questionniare}}.
+#' A questionnaire (in .csv format) is loaded globally with \code{\link{load_questionnaire}}.
 #' All other functions then refer to that questionnaire automatically. (See below on using multiple questionnaires in parallel.)
 #'
 #'
@@ -55,6 +55,8 @@
 #' @md
 NULL
 
+#'@import data.table dplyr stringi stringr magrittr
+NULL
 
-require("knitr")
-ls(pattern = "question_is") %>% paste("#' \\code{\\link{",.,"}}") %>% paste(collapse=", \n") %>% cat
+# require("knitr")
+# ls(pattern = "question_is") %>% paste("#' \\code{\\link{",.,"}}") %>% paste(collapse=", \n") %>% cat

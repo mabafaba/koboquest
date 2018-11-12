@@ -13,16 +13,18 @@ load_questionnaire(data, questions.file, choices.file,
 \item{questions.file}{file name of a csv file containing the kobo form's question sheet}
 
 \item{choices.file}{file name of a csv file containing the kobo form's choices sheet}
+
+\item{choices.label.column.to.use}{column header of the column with the choice labels youw want to be used when calling \code{\link{question_get_choice_labels}}}
 }
 \value{
-list of questions and choices, sorted to match. to data columns.
+A list containing the original questionnaire questions and choices, the choices matched 1:1 with the data columns, and all functions created by this function relating to the specific questionnaire (they are written to the global space too, but you can use these when using multiple questionnaires in parallel.)
 }
 \description{
 load_questionnaire
 }
 \examples{
-
-}
-\seealso{
-\code{\link{load_data()}, \link{load_samplingframe}}
+q <- load_questionnaire(data,
+                        question.file='kobo_questions.csv',
+                        choices.file='kobo_choices.csv',
+                        choices.label.column.to.use='Label::English')
 }
