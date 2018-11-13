@@ -28,17 +28,18 @@ question_is_skipped_apply_condition_to_data<-function(data,condition){
   condition_rexpression<-rify_condition(condition)
 
   # run the r expression:
-  attach(data)
+  relevant<-with(data,{
   relevant<-tryCatch({
     relevant<-condition_rexpression %>% parse(text = .) %>% eval
-  detach(data)
+
     relevant
   },error=function(e){
-    detach(data)
-    stop(paste0("Skiplogic not understood:\n",
+
+  stop(paste0("Skiplogic not understood:\n",
          condition,
          "tried to evaluate this as:\n",
          condition_rexpression))
+  })
   })
 
   if(!is.logical(relevant)){

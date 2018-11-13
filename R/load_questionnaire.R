@@ -67,8 +67,9 @@ load_questionnaire<-function(data,
 
   # this changes the questionnaire questions and choices to fit the data columns,
   # with empty entries for data columns that don't appear in the questionnaire.
+
   if((sum(!is.na(match(data_colnames, questions$name)))/number_of_questions) < 0.1) {
-    stop("The question names (questionnaire) and data column names (data) don't seem to match. please make sure the two columns are harmonized")
+    warning("The question names (questionnaire) and data column names (data) don't seem to match (<10% of data columns recognised as questions). please make sure the two columns are harmonized")
   }
 
       questions <- questions[match(data_colnames, questions$name),]
@@ -204,30 +205,82 @@ load_questionnaire<-function(data,
     }
 
 
+    # CRAN doesn't accept the closure...:
 
-    update.internal.package.function<-function(new.fun.name,
-                                               internal_fun_name_prefix="",
-                                               internal_fun_name_suffix="_internal",
-                                               package="koboquest"){
-      internal.function.name<-paste0(internal_fun_name_prefix,new.fun.name,internal_fun_name_suffix)
-      assignInNamespace(x = internal.function.name, ns=package, value= get(new.fun.name))
+    # update.internal.package.function<-function(new.fun.name,
+    #                                            internal_fun_name_prefix="",
+    #                                            internal_fun_name_suffix="_internal",
+    #                                            package="koboquest"){
+    #   internal.function.name<-paste0(internal_fun_name_prefix,new.fun.name,internal_fun_name_suffix)
+    #   assignInNamespace(x = internal.function.name, ns=package, value= get(new.fun.name))
+    # }
+
+
+    # sapply(c("question_get_choice_labels",
+    # "question_get_question_label",
+    # "question_is_numeric",
+    # "question_is_select_one",
+    # "question_is_select_multiple",
+    # "question_is_categorical",
+    # "question_in_questionnaire",
+    # "question_is_skipped",
+    # "is_questionnaire_loaded",
+    # "question_is_sm_choice"),update.internal.package.function)
+
+
+
+    question_type_from_questionnaire <- function(variables){
+      variable_types <- as.vector(sapply(variables, function(x){
+        # if(question_is_categorical(x)){return("categorical")}
+        if(question_is_select_multiple(x)){return("select_multiple")}
+        if(question_is_select_one(x)){return("select_one")}
+        if(question_is_numeric(x)){return("numeric")}
+        # none of the above? then we can't help you either
+        return(NA)
+      })
+      )
+      return(variable_types)
     }
 
 
-    sapply(c("question_get_choice_labels",
-    "question_get_question_label",
-    "question_is_numeric",
-    "question_is_select_one",
-    "question_is_select_multiple",
-    "question_is_categorical",
-    "question_in_questionnaire",
-    "question_is_skipped",
-    "is_questionnaire_loaded",
-    "question_is_sm_choice"),update.internal.package.function)
+    # documented in external default
+    # moved inside here to avoid dependence on global closure with 'assignInNamespace'
 
-    return(c(list(questions=questions,choices=choices,choices_per_variable=choices_per_data_column), list(data),
-             question_get_choice_labels=question_get_choice_labels,
-             question_get_question_label=question_get_question_label,
+    question_type<-function(variable.name,data=NULL,from.questionnaire=T,from.data=T){
+      if(!from.questionnaire & !from.data){stop("at least one of 'from.questionnaire' or 'from.data' parameters must be 'TRUE'.")}
+      if(is.null(data) & from.data & !from.questionnaire){
+        stop("to infer data types from data, provide 'data' parameter. alternatively, use 'from.questionnaire=TRUE'.")
+
+      }
+
+      if(from.questionnaire & !from.data & !is_questionnaire_loaded()){
+        stop("to infer data type from questionnaire, successfully run load_questionnaire(...) first.")
+      }
+      ### try to determine question type from questionnaire:
+      if(from.questionnaire & is_questionnaire_loaded()){
+        if(question_in_questionnaire(variable.name)){
+          type.from.q<-question_type_from_questionnaire(variable.name)
+          # if succesfull, we're done here:
+          if(!is.na(type.from.q)){return(type.from.q)}
+        }
+      }
+      # if from questionnaire failed but from.data=F, we shouldn't be here:
+      if(from.questionnaire & !from.data){
+        stop(paste(variable.name), "'s type could not be determined from questionnaire.
+             provide 'data' parameter and set from.data to 'TRUE' to infer the type from the data.")
+      }
+
+      # Guess from data:
+
+      if(!all(variable.name%in%names(data))){stop("Can not determine the data type: it's neither in the questionnaire nor in the data column headers")}
+      if(is.numeric(data[[variable.name]])){return("numeric")}
+      return("select_one")
+
+      }
+
+
+
+    return(c(question_type=question_type,
              question_is_numeric=question_is_numeric,
              question_is_select_one=question_is_select_one,
              question_is_select_multiple=question_is_select_multiple,
@@ -235,76 +288,14 @@ load_questionnaire<-function(data,
              question_in_questionnaire=question_in_questionnaire,
              question_is_skipped=question_is_skipped,
              is_questionnaire_loaded=is_questionnaire_loaded,
-             question_is_sm_choic=question_is_sm_choice))
+             question_is_sm_choice=question_is_sm_choice,
+             question_get_choice_labels=question_get_choice_labels,
+             question_get_question_label=question_get_question_label))
 
     }
 
 
-#' variable_type
-#'
-#' @param variables the vector or value for which the type should be determined
-#' @return a vector or value with variable types
-#' @details workhorse for question_type(). Returns NA if no type could be determined, or if type is not one of 'select_one', 'select_multiple', 'numeric'.
-#'
-question_type_from_questionnaire <- function(variables){
-    variable_types <- as.vector(sapply(variables, function(x){
-      # if(question_is_categorical(x)){return("categorical")}
-      if(question_is_select_multiple(x)){return("select_multiple")}
-      if(question_is_select_one(x)){return("select_one")}
-      if(question_is_numeric(x)){return("numeric")}
-      # none of the above? then we can't help you either
-      return(NA)
-      })
-    )
-    return(variable_types)
-    }
 
-
-#' question_type
-#'
-#' Determines the kobo question type for a given variable name
-#'
-#' @param variable.name the kobo question name for which the type should be determined. (works on a vector with multiple names)
-#' @param data the dataset matching the kobo questionnaire. This can be left empty if \code{from.data=F}.
-#' A provided dataset can be used as a fallback with \code{from.data=T} in case the data type can not be determined from the questionnaire.
-#' @param from.questionnaire if FALSE, prevent determinining data type from questionnaire. Can not be FALSE if from.data is also FALSE.
-#' @param from.data if TRUE, allows to determine data type from provided \code{data}. Can not be FALSE if from.data is also FALSE. If both from.questionnaire and from.data are TRUE, data types determined from the questionnaire have precedence.
-#' @return a string naming the question type. One of "select_one", "select_multiple" or "numeric".
-#' @seealso Should be used after \code{\link{load_questionnaire}}, but can work without if data is provided as a fallback.
-#' @export
-#' @examples
-#' question_type("question_name_in_loaded_questionnaire")
-question_type<-function(variable.name,data=NULL,from.questionnaire=T,from.data=T){
-  if(!from.questionnaire & !from.data){stop("at least one of 'from.questionnaire' or 'from.data' parameters must be 'TRUE'.")}
-    if(is.null(data) & from.data & !from.questionnaire){
-      stop("to infer data types from data, provide 'data' parameter. alternatively, use 'from.questionnaire=TRUE'.")
-
-    }
-
-  if(from.questionnaire & !from.data & !is_questionnaire_loaded()){
-    stop("to infer data type from questionnaire, successfully run load_questionnaire(...) first.")
-  }
-    ### try to determine question type from questionnaire:
-  if(from.questionnaire & is_questionnaire_loaded()){
-      if(question_in_questionnaire(variable.name)){
-        type.from.q<-question_type_from_questionnaire(variable.name)
-        # if succesfull, we're done here:
-        if(!is.na(type.from.q)){return(type.from.q)}
-        }
-  }
-    # if from questionnaire failed but from.data=F, we shouldn't be here:
-    if(from.questionnaire & !from.data){
-      stop(paste(variable.name), "'s type could not be determined from questionnaire.
-           provide 'data' parameter and set from.data to 'TRUE' to infer the type from the data.")
-    }
-
-    # Guess from data:
-
-    if(!all(variable.name%in%names(data))){stop("Can not determine the data type: it's neither in the questionnaire nor in the data column headers")}
-    if(is.numeric(data[[variable.name]])){return("numeric")}
-    return("select_one")
-
-}
 
 
 # skiplogic can apply to a whole group, so we need to (recursively) attach a group's condition to each individual questions condition when loading the questionnaire
@@ -346,6 +337,28 @@ add_group_conditions_to_question_conditions<-function(questions){
   }
   conditions
 }
+
+
+
+#' question_type
+#'
+#' Determines the kobo question type for a given variable name
+#'
+#' @param variable.name the kobo question name for which the type should be determined. (works on a vector with multiple names)
+#' @param data the dataset matching the kobo questionnaire. This can be left empty if \code{from.data=F}.
+#' A provided dataset can be used as a fallback with \code{from.data=T} in case the data type can not be determined from the questionnaire.
+#' @param from.questionnaire if FALSE, prevent determinining data type from questionnaire. Can not be FALSE if from.data is also FALSE.
+#' @param from.data if TRUE, allows to determine data type from provided \code{data}. Can not be FALSE if from.data is also FALSE. If both from.questionnaire and from.data are TRUE, data types determined from the questionnaire have precedence.
+#' @return a string naming the question type. One of "select_one", "select_multiple" or "numeric".
+#' @seealso Should be used after \code{\link{load_questionnaire}}, but can work without if data is provided as a fallback.
+#' @export
+#' @examples
+#' question_type("question_name_in_loaded_questionnaire")
+question_type<-function(variable.name,data=NULL,from.questionnaire=T,from.data=T){
+
+  stop("run load_questionnaire, which will return a list of functions including 'question_type()' as an object - use that one! ")
+}
+
 
 
 read.csv.auto.sep<-function(file,stringsAsFactors=F,...){
