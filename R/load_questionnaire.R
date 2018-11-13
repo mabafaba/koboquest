@@ -1,6 +1,5 @@
+# 'questionnaire' object is stored in the parent environment of a closure. CMD check doesn't seem to get it
 
-# questionnaire_is_loaded <- FALSE
-#
 
 #' load_questionnaire
 #' @param data data frame containing the data matching the questionnaire to be loaded.
@@ -11,22 +10,14 @@
 #' @export
 #' @examples
 #' q <- load_questionnaire(data,
-#'                         question.file='kobo_questions.csv',
+#'                         questions.file='kobo_questions.csv',
 #'                         choices.file='kobo_choices.csv',
 #'                         choices.label.column.to.use='Label::English')
 load_questionnaire<-function(data,
                              questions.file,
                              choices.file,
                              choices.label.column.to.use=NULL){
-  # generic function to remove non-data from vectors
-  hasdata<-function (x, return.index = F) {
-    index <- which(!is.null(x) & !is.na(x) & x != "" & !is.infinite(x))
-    value <- x[which(!is.null(x) & !is.na(x) & x != "" & !is.infinite(x))]
-    if (return.index) {
-      return(index)
-    }
-    return(value)
-  }
+
 
   # generic function to replace values in a vector based on a lookup table
   replace_with_lookup_table<-function(x,y){
@@ -311,7 +302,6 @@ question_type<-function(variable.name,data=NULL,from.questionnaire=T,from.data=T
 
     if(!all(variable.name%in%names(data))){stop("Can not determine the data type: it's neither in the questionnaire nor in the data column headers")}
     if(is.numeric(data[[variable.name]])){return("numeric")}
-    if(is.numeric.fuzzy(data[[variable.name]], 0.9)){return("numeric")} # if 90% of the data can be coerced into numeric, we'll go for that.
     return("select_one")
 
 }

@@ -8,7 +8,8 @@ Depends:
   dplyr,
   magrittr,
   stringi,
-  stringr
+  stringr,
+  utils
 License: GPL-3
 Encoding: UTF-8
 LazyData: true

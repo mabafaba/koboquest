@@ -27,14 +27,14 @@ All other functions then refer to that questionnaire automatically. (See below o
 }
 There are functions for groups of types:
 \itemize{
-\item \code{\link{ question_is_categorical}},
-\item \code{\link{ question_is_numeric}},
+\item \code{\link{question_is_categorical}},
+\item \code{\link{question_is_numeric}},
 }
 And for testing individual types specifically:
 \itemize{
-\item \code{\link{ question_is_select_multiple}},
-\item \code{\link{ question_is_select_one}},
-\item \code{\link{ question_is_sm_choice}},
+\item \code{\link{question_is_select_multiple}},
+\item \code{\link{question_is_select_one}},
+\item \code{\link{question_is_sm_choice}},
 }
 }
 

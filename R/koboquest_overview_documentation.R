@@ -20,14 +20,14 @@
 #'}
 #' There are functions for groups of types:
 #'  \itemize{
-#' \item \code{\link{ question_is_categorical}},
-#' \item \code{\link{ question_is_numeric}},
+#' \item \code{\link{question_is_categorical}},
+#' \item \code{\link{question_is_numeric}},
 #'}
 #' And for testing individual types specifically:
 #'\itemize{
-#'\item \code{\link{ question_is_select_multiple}},
-#' \item \code{\link{ question_is_select_one}},
-#' \item \code{\link{ question_is_sm_choice}},
+#'\item \code{\link{question_is_select_multiple}},
+#' \item \code{\link{question_is_select_one}},
+#' \item \code{\link{question_is_sm_choice}},
 #'}
 #' @section Parsing skiplogic:
 #' Use \code{\link{question_is_skipped}} To find out which records of a certain question were skipped
@@ -55,8 +55,9 @@
 #' @md
 NULL
 
-#'@import data.table dplyr stringi stringr magrittr
+#'@import data.table dplyr stringi stringr magrittr utils
 NULL
+
 
 # require("knitr")
 # ls(pattern = "question_is") %>% paste("#' \\code{\\link{",.,"}}") %>% paste(collapse=", \n") %>% cat

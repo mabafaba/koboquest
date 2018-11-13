@@ -24,7 +24,7 @@ load_questionnaire
 }
 \examples{
 q <- load_questionnaire(data,
-                        question.file='kobo_questions.csv',
+                        questions.file='kobo_questions.csv',
                         choices.file='kobo_choices.csv',
                         choices.label.column.to.use='Label::English')
 }

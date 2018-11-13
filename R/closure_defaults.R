@@ -10,6 +10,9 @@
 #' Here we define 1. and 2.
 #' All of the closures here are fabricated by load_questionnaire().
 
+# suppress notes on global variables. 'questionnaire' is in the parent environment of a closure.
+questionnaire<-NULL
+. <- NULL
 
 ##################
 # EXPORTS:
