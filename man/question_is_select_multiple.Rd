@@ -38,7 +38,7 @@ testing for specific types:
 \code{\link{question_is_numeric}},
 \code{\link{question_is_categorical}},
 \code{\link{question_is_select_one}},
-\code{\link{question_is_multiple}},
+\code{\link{question_is_select_multiple}},
 \code{\link{question_is_sm_choice}}
 
 parsing kobo skip-logic:

@@ -2,20 +2,30 @@
 % Please edit documentation in R/load_questionnaire.R
 \name{question_type}
 \alias{question_type}
-\title{question_data_type}
+\title{question_type}
 \usage{
 question_type(variable.name, data = NULL, from.questionnaire = T,
   from.data = T)
 }
 \arguments{
-\item{variables}{the vector or value for which the type should be determined}
+\item{variable.name}{the kobo question name for which the type should be determined. (works on a vector with multiple names)}
+
+\item{data}{the dataset matching the kobo questionnaire. This can be left empty if \code{from.data=F}.
+A provided dataset can be used as a fallback with \code{from.data=T} in case the data type can not be determined from the questionnaire.}
+
+\item{from.questionnaire}{if FALSE, prevent determinining data type from questionnaire. Can not be FALSE if from.data is also FALSE.}
+
+\item{from.data}{if TRUE, allows to determine data type from provided \code{data}. Can not be FALSE if from.data is also FALSE. If both from.questionnaire and from.data are TRUE, data types determined from the questionnaire have precedence.}
 }
 \value{
-a vector or value with variable types
+a string naming the question type. One of "select_one", "select_multiple" or "numeric".
 }
 \description{
-question_data_type
+Determines the kobo question type for a given variable name
 }
 \examples{
-
+question_type("question_name_in_loaded_questionnaire")
+}
+\seealso{
+Should be used after \code{\link{load_questionnaire}}, but can work without if data is provided as a fallback.
 }

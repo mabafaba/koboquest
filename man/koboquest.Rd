@@ -17,7 +17,7 @@ This package lets you load a questionnaire and match it with the data. It then p
 \item parsing questionnaire skiplogic ('relevant' column in XLSForms.)
 }
 
-A questionnaire (in .csv format) is loaded globally with \code{\link{load_questionniare}}.
+A questionnaire (in .csv format) is loaded globally with \code{\link{load_questionnaire}}.
 All other functions then refer to that questionnaire automatically. (See below on using multiple questionnaires in parallel.)
 }
 \section{Identifying question types}{

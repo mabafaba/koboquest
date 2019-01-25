@@ -19,8 +19,8 @@ test_that("question_type works without the questionnaire",{
 #   example1<-load.example("example1")
 #   good_parameters<-list(
 #     example.data.path("example1"),
-#     questions.file = paste0(example1$path,"kobo questions.csv"),
-#     choices.file = paste0(example1$path,"kobo choices.csv"),
+#     questions.file = paste0(example1$path,"kobo_questions.csv"),
+#     choices.file = paste0(example1$path,"kobo_choices.csv"),
 #     choices.label.column.to.use = example1$choice.label.column.to.use)
 # })
 
