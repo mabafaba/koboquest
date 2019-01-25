@@ -327,6 +327,7 @@ add_group_conditions_to_question_conditions<-function(questions){
 
 
   for(i in 1:nrow(questions)){
+
     is_group_start<-(i %in% as.numeric(begin_gr))
     is_group_end<-(i %in% as.numeric(end_gr))
 
@@ -341,6 +342,9 @@ add_group_conditions_to_question_conditions<-function(questions){
       condition_that_only_applies_to_this_question<-NULL  }
     if(!is_group_end & !is_group_start){
       condition_that_only_applies_to_this_question<-questions$relevant[i]
+      if(is.na(condition_that_only_applies_to_this_question)){
+        condition_that_only_applies_to_this_question<-""
+      }
     }
 
     all_condition_for_this_q<-c(group_conditions,condition_that_only_applies_to_this_question)
