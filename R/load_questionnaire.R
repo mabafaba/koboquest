@@ -1,6 +1,14 @@
+# generic function to remove non-data from vectors
+hasdata<-function (x, return.index = F) {
+  index <- which(!is.null(x) & !is.na(x) & x != "" & !is.infinite(x))
+  value <- x[which(!is.null(x) & !is.na(x) & x != "" & !is.infinite(x))]
+  if (return.index) {
+    return(index)
+  }
+  return(value)
+}
 
-# questionnaire_is_loaded <- FALSE
-#
+
 
 #' load_questionnaire
 #' @param data data frame containing the data matching the questionnaire to be loaded.
@@ -18,15 +26,7 @@ load_questionnaire<-function(data,
                              questions.file,
                              choices.file,
                              choices.label.column.to.use=NULL){
-  # generic function to remove non-data from vectors
-  hasdata<-function (x, return.index = F) {
-    index <- which(!is.null(x) & !is.na(x) & x != "" & !is.infinite(x))
-    value <- x[which(!is.null(x) & !is.na(x) & x != "" & !is.infinite(x))]
-    if (return.index) {
-      return(index)
-    }
-    return(value)
-  }
+
 
   # generic function to replace values in a vector based on a lookup table
   replace_with_lookup_table<-function(x,y){
@@ -47,7 +47,10 @@ load_questionnaire<-function(data,
 
   # choices$name <- gsub("_", ".", choices$name) # UGANDA
 
-
+  if(is.null(choices.label.column.to.use)){
+    choices.label.column.to.use<-grep("label",names(choices),value = T)
+    if(length(choices.label.column.to.use==0)){stop("No column in the choices file contains the word 'label', so you have to provide the exact name of the column to use as labels in the `choices.label.column.to.use` parameters.")}
+  }
   choices.label.column.to.use <- to_alphanumeric_lowercase(choices.label.column.to.use)
 
   # sanitise
@@ -302,6 +305,8 @@ question_type<-function(variable.name,data=NULL,from.questionnaire=T,from.data=T
         }
   }
     # if from questionnaire failed but from.data=F, we shouldn't be here:
+
+
     if(from.questionnaire & !from.data){
       stop(paste(variable.name), "'s type could not be determined from questionnaire.
            provide 'data' parameter and set from.data to 'TRUE' to infer the type from the data.")
@@ -309,12 +314,20 @@ question_type<-function(variable.name,data=NULL,from.questionnaire=T,from.data=T
 
     # Guess from data:
 
-    if(!all(variable.name%in%names(data))){stop("Can not determine the data type: it's neither in the questionnaire nor in the data column headers")}
+    if(!all(variable.name%in%names(data)) & from.questionnaire){stop("Can not determine the data type: variable neither in the questionnaire nor in the data column headers")}
+    if(!all(variable.name%in%names(data)) & !from.questionnaire){stop("Can not determine the data type: variable is not in the data column headers")}
+
     if(is.numeric(data[[variable.name]])){return("numeric")}
-    if(is.numeric.fuzzy(data[[variable.name]], 0.9)){return("numeric")} # if 90% of the data can be coerced into numeric, we'll go for that.
-    return("select_one")
+
+    if((data[[variable.name]] %>% as.numeric %>% hasdata %>% length)/
+       (data[[variable.name]] %>% hasdata %>% length)==1){
+      return("numeric")
+    }
+  return("select_one")
 
 }
+
+
 
 
 # skiplogic can apply to a whole group, so we need to (recursively) attach a group's condition to each individual questions condition when loading the questionnaire
