@@ -325,7 +325,7 @@ add_group_conditions_to_question_conditions<-function(questions){
     }
 
     all_condition_for_this_q<-c(group_conditions,condition_that_only_applies_to_this_question)
-
+    all_condition_for_this_q[is.na(all_condition_for_this_q)]<-""
     if(all(all_condition_for_this_q=="")){
         all_condition_for_this_q<-""
       }else{

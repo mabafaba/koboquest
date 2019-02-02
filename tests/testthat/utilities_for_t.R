@@ -30,7 +30,7 @@ example_metadata<-data.frame(
 
 
 read.example.csv<-function(filename,examplename){
-  read.csv.auto.sep(paste0(example.data.path(examplename),filename))
+  koboquest:::read.csv.auto.sep(paste0(example.data.path(examplename),filename))
 }
 
 

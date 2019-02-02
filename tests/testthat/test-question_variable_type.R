@@ -1,7 +1,7 @@
 context("question_type()")
 source("./utilities_for_t.R")
 test_that("question_type works without the questionnaire",{
-  data<-read.csv.auto.sep(paste0(example.data.path("example1"),"data.csv"))
+  data<-koboquest:::read.csv.auto.sep(paste0(example.data.path("example1"),"data.csv"))
   example<-load.example("example1",with_questionnaire = FALSE)
   expect_equal(question_type(example$tf$select_one[1], data), "select_one")
   expect_equal(question_type(example$tf$select_multiple[1], data), "select_one")
