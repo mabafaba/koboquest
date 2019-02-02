@@ -287,7 +287,18 @@ load_questionnaire<-function(data,
       if(is.numeric(data[[variable.name]])){return("numeric")}
       return("select_one")
 
-      }
+    }
+
+
+
+    choices_for_select_multiple <- function(question_name, data){
+      question_name<-as.character(question_name)
+      choices<-choices_per_data_column[[question_name]]
+      select_mult_colnames<-paste(question_name,choices$name,sep=".") %>% to_alphanumeric_lowercase
+      indices<-match(as.character(select_mult_colnames),names(data))
+      if(any(is.na(indices))){stop(paste("can not find TRUE/FALSE columns for variable",question_name,". Please double check that they all exist in the data and that their names are in the standard kobo format of \"[question name].[choice name]\""))}
+      return(indices)
+    }
 
 
 
