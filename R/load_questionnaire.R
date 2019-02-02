@@ -1,5 +1,16 @@
 # 'questionnaire' object is stored in the parent environment of a closure. CMD check doesn't seem to get it
 
+# generic function to remove non-data from vectors
+hasdata<-function (x, return.index = F) {
+  index <- which(!is.null(x) & !is.na(x) & x != "" & !is.infinite(x))
+  value <- x[which(!is.null(x) & !is.na(x) & x != "" & !is.infinite(x))]
+  if (return.index) {
+    return(index)
+  }
+  return(value)
+}
+
+
 
 #' load_questionnaire
 #' @param data data frame containing the data matching the questionnaire to be loaded.
@@ -9,10 +20,7 @@
 #' @return A list containing the original questionnaire questions and choices, the choices matched 1:1 with the data columns, and all functions created by this function relating to the specific questionnaire (they are written to the global space too, but you can use these when using multiple questionnaires in parallel.)
 #' @export
 #' @examples
-#' q <- load_questionnaire(data,
-#'                         questions.file='kobo_questions.csv',
-#'                         choices.file='kobo_choices.csv',
-#'                         choices.label.column.to.use='Label::English')
+
 load_questionnaire<-function(data,
                              questions.file,
                              choices.file,
@@ -38,7 +46,10 @@ load_questionnaire<-function(data,
 
   # choices$name <- gsub("_", ".", choices$name) # UGANDA
 
-
+  if(is.null(choices.label.column.to.use)){
+    choices.label.column.to.use<-grep("label",names(choices),value = T)
+    if(length(choices.label.column.to.use==0)){stop("No column in the choices file contains the word 'label', so you have to provide the exact name of the column to use as labels in the `choices.label.column.to.use` parameters.")}
+  }
   choices.label.column.to.use <- to_alphanumeric_lowercase(choices.label.column.to.use)
 
   # sanitise
@@ -293,6 +304,8 @@ question_type<-function(variable.name,data=NULL,from.questionnaire=T,from.data=T
         }
   }
     # if from questionnaire failed but from.data=F, we shouldn't be here:
+
+
     if(from.questionnaire & !from.data){
       stop(paste(variable.name), "'s type could not be determined from questionnaire.
            provide 'data' parameter and set from.data to 'TRUE' to infer the type from the data.")
@@ -300,11 +313,21 @@ question_type<-function(variable.name,data=NULL,from.questionnaire=T,from.data=T
 
     # Guess from data:
 
-    if(!all(variable.name%in%names(data))){stop("Can not determine the data type: it's neither in the questionnaire nor in the data column headers")}
+    if(!all(variable.name%in%names(data)) & from.questionnaire){stop("Can not determine the data type: variable neither in the questionnaire nor in the data column headers")}
+    if(!all(variable.name%in%names(data)) & !from.questionnaire){stop("Can not determine the data type: variable is not in the data column headers")}
+
     if(is.numeric(data[[variable.name]])){return("numeric")}
-    return("select_one")
+
+
+    if((data[[variable.name]] %>% as.numeric %>% hasdata %>% length)/
+       (data[[variable.name]] %>% hasdata %>% length)==1){
+      return("numeric")
+    }
+  return("select_one")
 
 }
+
+
 
 
 # skiplogic can apply to a whole group, so we need to (recursively) attach a group's condition to each individual questions condition when loading the questionnaire
@@ -317,6 +340,7 @@ add_group_conditions_to_question_conditions<-function(questions){
 
 
   for(i in 1:nrow(questions)){
+
     is_group_start<-(i %in% as.numeric(begin_gr))
     is_group_end<-(i %in% as.numeric(end_gr))
 
@@ -331,6 +355,9 @@ add_group_conditions_to_question_conditions<-function(questions){
       condition_that_only_applies_to_this_question<-NULL  }
     if(!is_group_end & !is_group_start){
       condition_that_only_applies_to_this_question<-questions$relevant[i]
+      if(is.na(condition_that_only_applies_to_this_question)){
+        condition_that_only_applies_to_this_question<-""
+      }
     }
 
     all_condition_for_this_q<-c(group_conditions,condition_that_only_applies_to_this_question)

@@ -1,4 +1,5 @@
 insure.string.is.column.header<-function(df,string,warning=FALSE){
+  if(is.null(string)){stop("a parameter that should have been a column header was NULL or not provided.")}
   if(!all(string%in%names(df))){
     if(!warning){ stop(paste(string[!string%in%names(df)],"does not match a column name in the data frame.\n"))}
     else        { warning(paste(string[!string%in%names(df)],"does not match a column name in the data frame.\n"))}
