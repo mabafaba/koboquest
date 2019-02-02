@@ -311,6 +311,7 @@ load_questionnaire<-function(data,
              question_is_skipped=question_is_skipped,
              is_questionnaire_loaded=is_questionnaire_loaded,
              question_is_sm_choice=question_is_sm_choice,
+             choices_for_select_multiple=choices_for_select_multiple,
              question_get_choice_labels=question_get_choice_labels,
              question_get_question_label=question_get_question_label))
 
