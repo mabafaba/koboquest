@@ -60,19 +60,16 @@ load_questionnaire<-function(data,
   questions$name <- to_alphanumeric_lowercase(questions$name)
 
 
-  # # ####UGA ONLY
-  # questions$name <- gsub("_", ".", questions$name)
-  # choices$name <- gsub("_", ".", choices$name)
-  # names(data) <- gsub("_", ".", names(data))
-  # questions$relevant <- gsub("_", ".", questions$relevant) %>% to_alphanumeric_lowercase
-
-  # # UGANDA
-
   begin_gr <- grep(paste(c("begin_group","begin group"), collapse = "|"), questions$type, ignore.case = T)
   end_gr <- grep(paste(c("end_group","end group"), collapse = "|"), questions$type, ignore.case = T)
   number_of_questions <- (length(questions$name) - length(begin_gr) - length(end_gr))
 
   questions$relevant<-add_group_conditions_to_question_conditions(questions)
+
+
+  # preserve questions data frame
+  questions_as_df<-questions
+  choices_as_df<-choices
   # get data column names
   data_colnames<-names(data)
 
@@ -215,7 +212,9 @@ load_questionnaire<-function(data,
       return(FALSE)
     }
 
-
+    questionnaire_as_data.frames<-function(){
+      return(list(questions=questions_as_df,choices = choices_as_df))
+    }
     # CRAN doesn't accept the closure...:
 
     # update.internal.package.function<-function(new.fun.name,
