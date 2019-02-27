@@ -16,11 +16,17 @@ hasdata<-function (x, return.index = F) {
 #' @param data data frame containing the data matching the questionnaire to be loaded.
 #' @param questions.file file name of a csv file containing the kobo form's question sheet
 #' @param choices.file file name of a csv file containing the kobo form's choices sheet
-#' @param choices.label.column.to.use column header of the column with the choice labels youw want to be used when calling \code{\link{question_get_choice_labels}}
+#' @param choices.label.column.to.use The choices csv file has (sometimes multiple) columns with labels. They are often called "Label::English" or similar. Here you need to provide the _name of the column_ that you want to use for labels (see example!)
 #' @return A list containing the original questionnaire questions and choices, the choices matched 1:1 with the data columns, and all functions created by this function relating to the specific questionnaire (they are written to the global space too, but you can use these when using multiple questionnaires in parallel.)
 #' @export
 #' @examples
-
+#'
+#'load_questionnaire(mydata,
+#'                   questions.file="koboquestions.csv",
+#'                   choices.file="kobochoices.csv",
+#'                   choices.label.column.to.use="Label::English")
+#'
+#'
 load_questionnaire<-function(data,
                              questions.file,
                              choices.file,
@@ -36,7 +42,7 @@ load_questionnaire<-function(data,
 
   # load files
   questions <- read.csv.auto.sep(questions.file,stringsAsFactors = F, header = T)
-  choices <- read.csv(choices.file, stringsAsFactors = F, header = T)
+  choices <- read.csv.auto.sep(choices.file, stringsAsFactors = F, header = T)
 
   # harmonise data column references
   names(questions) <- to_alphanumeric_lowercase(names(questions))
@@ -212,7 +218,7 @@ load_questionnaire<-function(data,
       return(FALSE)
     }
 
-    questionnaire_as_data.frames<-function(){
+    as.data.frames<-function(){
       return(list(questions=questions_as_df,choices = choices_as_df))
     }
     # CRAN doesn't accept the closure...:
@@ -221,7 +227,7 @@ load_questionnaire<-function(data,
     #                                            internal_fun_name_prefix="",
     #                                            internal_fun_name_suffix="_internal",
     #                                            package="koboquest"){
-    #   internal.function.name<-paste0(internal_fun_name_prefix,new.fun.name,internal_fun_name_suffix)
+    #   internal.function.name<-paste0(internal_fun_name_prefix,new.  un.name,internal_fun_name_suffix)
     #   assignInNamespace(x = internal.function.name, ns=package, value= get(new.fun.name))
     # }
 
@@ -312,7 +318,9 @@ load_questionnaire<-function(data,
              question_is_sm_choice=question_is_sm_choice,
              choices_for_select_multiple=choices_for_select_multiple,
              question_get_choice_labels=question_get_choice_labels,
-             question_get_question_label=question_get_question_label))
+             question_get_question_label=question_get_question_label,
+             raw_questions=as.data.frames,
+             raw_choices))
 
 
     }
