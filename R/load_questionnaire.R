@@ -319,8 +319,7 @@ load_questionnaire<-function(data,
              choices_for_select_multiple=choices_for_select_multiple,
              question_get_choice_labels=question_get_choice_labels,
              question_get_question_label=question_get_question_label,
-             raw_questions=as.data.frames,
-             raw_choices))
+             raw_questionnaire=as.data.frames))
 
 
     }
