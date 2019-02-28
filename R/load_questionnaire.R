@@ -398,9 +398,9 @@ question_type<-function(variable.name,data=NULL,from.questionnaire=T,from.data=T
 
 
 read.csv.auto.sep<-function(file,stringsAsFactors=F,...){
-  # df<-fread(file,stringsAsFactors=stringsAsFactors,...) %>% as.data.frame
-  df<-read.csv(file,stringsAsFactors = F)
-  df<-to_alphanumeric_lowercase_colnames_df(df)
+  df <- data.table::fread(file, stringsAsFactors = stringsAsFactors,
+                          ...) %>% as.data.frame
+  colnames(df) <- to_alphanumeric_lowercase(colnames(df))
   return(df)
 }
 
