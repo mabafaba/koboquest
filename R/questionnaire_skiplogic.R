@@ -81,7 +81,7 @@ rify_logical_operators<-function(x){
      gsub("[[:space:]]or$","|",.) %>% # "or at end of string
     gsub("^or$","|",.) # lonely "or"
 
-  single_equal_sign_pattern<-"([^=<>])[=]([^=])"
+  single_equal_sign_pattern<-"([^=<>!])[=]([^=])"
   x <-gsub(single_equal_sign_pattern,"\\1==\\2",x) # equal sign that doesn't have "=" before or after, and doesnt have "<" or ">" before.
   x
 }
