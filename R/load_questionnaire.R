@@ -14,22 +14,16 @@ hasdata<-function (x, return.index = F) {
 
 #' load_questionnaire
 #' @param data data frame containing the data matching the questionnaire to be loaded.
-#' @param questions.file file name of a csv file containing the kobo form's question sheet
-#' @param choices.file file name of a csv file containing the kobo form's choices sheet
-#' @param choices.label.column.to.use The choices csv file has (sometimes multiple) columns with labels. They are often called "Label::English" or similar. Here you need to provide the _name of the column_ that you want to use for labels (see example!)
-#' @return A list containing the original questionnaire questions and choices, the choices matched 1:1 with the data columns, and all functions created by this function relating to the specific questionnaire (they are written to the global space too, but you can use these when using multiple questionnaires in parallel.)
+#' @param questions kobo form question sheet; either as a data frame, or a single character string with the name of a csv file
+#' @param choices.file questions kobo form choices sheet; either as a data frame, or a single character string with the name of a csv file
+#' @param choices.label.column.to.use The choices table has (sometimes multiple) columns with labels. They are often called "Label::English" or similar. Here you need to provide the _name of the column_ that you want to use for labels (see example!)
+#' @return A list containing the original questionnaire questions and choices, the choices matched 1:1 with the data columns, and all functions created by this function relating to the specific questionnaire
 #' @export
 #' @examples
 #'
-#'load_questionnaire(mydata,
-#'                   questions.file="koboquestions.csv",
-#'                   choices.file="kobochoices.csv",
-#'                   choices.label.column.to.use="Label::English")
-#'
-#'
 load_questionnaire<-function(data,
-                             questions.file,
-                             choices.file,
+                             questions,
+                             choices,
                              choices.label.column.to.use=NULL){
 
 
@@ -41,8 +35,16 @@ load_questionnaire<-function(data,
   }
 
   # load files
-  questions <- read.csv.auto.sep(questions.file,stringsAsFactors = F, header = T)
-  choices <- read.csv.auto.sep(choices.file, stringsAsFactors = F, header = T)
+  if(is.vector(questions)){
+    if(length(questions)==1){
+      questions <- read.csv.auto.sep(questions.file,stringsAsFactors = F, header = T)
+    }
+  }
+  if(is.vector(choices)){
+    if(length(choices)==1){
+      choices <- read.csv.auto.sep(choices.file, stringsAsFactors = F, header = T)
+    }
+  }
 
   # harmonise data column references
   names(questions) <- to_alphanumeric_lowercase(names(questions))
