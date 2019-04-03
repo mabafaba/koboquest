@@ -214,7 +214,7 @@ load_questionnaire<-function(data,
 
       if(!question_is_select_multiple(question.name.sans.choice)){return(FALSE)}
 
-      if(to_alphanumeric_lowercase(choice.name) %in% to_alphanumeric_lowercase(choices_per_data_column[[question.name.sans.choice]]$name){
+      if(to_alphanumeric_lowercase(choice.name) %in% to_alphanumeric_lowercase(choices_per_data_column[[question.name.sans.choice]]$name)){
         return(TRUE)
       }
       return(FALSE)
