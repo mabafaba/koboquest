@@ -208,16 +208,14 @@ load_questionnaire<-function(data,
       if(is.na(question.name)){return(FALSE)}
       if(question.name==""){return(FALSE)}
 
-      var.name.split<-strsplit(question.name,"\\.")
-      question.name.sans.choice<-paste0(var.name.split[[1]][-length(var.name.split[[1]])],collapse=".")
-      choice.name<-var.name.split[[1]][length(var.name.split[[1]])]
+      sm_cols<-purrr::map2(names(choices_per_data_column),
+                           choices_per_data_column,function(x,y){
+                             if(length(y$name)>0){
+                               paste(x,y$name,sep=".")}else{NULL}
+                           }) %>% unlist %>% to_alphanumeric_lowercase
 
-      if(!question_is_select_multiple(question.name.sans.choice)){return(FALSE)}
+      return(to_alphanumeric_lowercase(question.name) %in% sm_cols)
 
-      if(to_alphanumeric_lowercase(choice.name) %in% to_alphanumeric_lowercase(choices_per_data_column[[question.name.sans.choice]]$name)){
-        return(TRUE)
-      }
-      return(FALSE)
     }
 
     as.data.frames<-function(){
