@@ -14,22 +14,16 @@ hasdata<-function (x, return.index = F) {
 
 #' load_questionnaire
 #' @param data data frame containing the data matching the questionnaire to be loaded.
-#' @param questions.file file name of a csv file containing the kobo form's question sheet
-#' @param choices.file file name of a csv file containing the kobo form's choices sheet
-#' @param choices.label.column.to.use The choices csv file has (sometimes multiple) columns with labels. They are often called "Label::English" or similar. Here you need to provide the _name of the column_ that you want to use for labels (see example!)
-#' @return A list containing the original questionnaire questions and choices, the choices matched 1:1 with the data columns, and all functions created by this function relating to the specific questionnaire (they are written to the global space too, but you can use these when using multiple questionnaires in parallel.)
+#' @param questions kobo form question sheet; either as a data frame, or a single character string with the name of a csv file
+#' @param choices.file questions kobo form choices sheet; either as a data frame, or a single character string with the name of a csv file
+#' @param choices.label.column.to.use The choices table has (sometimes multiple) columns with labels. They are often called "Label::English" or similar. Here you need to provide the _name of the column_ that you want to use for labels (see example!)
+#' @return A list containing the original questionnaire questions and choices, the choices matched 1:1 with the data columns, and all functions created by this function relating to the specific questionnaire
 #' @export
 #' @examples
 #'
-#'load_questionnaire(mydata,
-#'                   questions.file="koboquestions.csv",
-#'                   choices.file="kobochoices.csv",
-#'                   choices.label.column.to.use="Label::English")
-#'
-#'
 load_questionnaire<-function(data,
-                             questions.file,
-                             choices.file,
+                             questions,
+                             choices,
                              choices.label.column.to.use=NULL){
 
 
@@ -41,8 +35,16 @@ load_questionnaire<-function(data,
   }
 
   # load files
-  questions <- read.csv.auto.sep(questions.file,stringsAsFactors = F, header = T)
-  choices <- read.csv.auto.sep(choices.file, stringsAsFactors = F, header = T)
+  if(is.vector(questions)){
+    if(length(questions)==1){
+      questions <- read.csv.auto.sep(questions.file,stringsAsFactors = F, header = T)
+    }
+  }else{if(!is.data.frame(questions)){stop("questions must either be a data frame or a csv file name")}}
+  if(is.vector(choices)){
+    if(length(choices)==1){
+      choices <- read.csv.auto.sep(choices.file, stringsAsFactors = F, header = T)
+    }
+  }else{if(!is.data.frame(questions)){stop("choices must either be a data frame or a csv file name")}}
 
   # harmonise data column references
   names(questions) <- to_alphanumeric_lowercase(names(questions))
@@ -54,7 +56,7 @@ load_questionnaire<-function(data,
 
   if(is.null(choices.label.column.to.use)){
     choices.label.column.to.use<-grep("label",names(choices),value = T)
-    if(length(choices.label.column.to.use==0)){stop("No column in the choices file contains the word 'label', so you have to provide the exact name of the column to use as labels in the `choices.label.column.to.use` parameters.")}
+    if(length(choices.label.column.to.use)==0){stop("No column in the choices file contains the word 'label', so you have to provide the exact name of the column to use as labels in the `choices.label.column.to.use` parameters.")}
   }
   choices.label.column.to.use <- to_alphanumeric_lowercase(choices.label.column.to.use)
 
@@ -206,16 +208,14 @@ load_questionnaire<-function(data,
       if(is.na(question.name)){return(FALSE)}
       if(question.name==""){return(FALSE)}
 
-      var.name.split<-strsplit(question.name,"\\.")
-      question.name.sans.choice<-paste0(var.name.split[[1]][-length(var.name.split[[1]])],collapse=".")
-      choice.name<-var.name.split[[1]][length(var.name.split[[1]])]
+      sm_cols<-purrr::map2(names(choices_per_data_column),
+                           choices_per_data_column,function(x,y){
+                             if(length(y$name)>0){
+                               paste(x,y$name,sep=".")}else{NULL}
+                           }) %>% unlist %>% to_alphanumeric_lowercase
 
-      if(!question_is_select_multiple(question.name.sans.choice)){return(FALSE)}
+      return(to_alphanumeric_lowercase(question.name) %in% sm_cols)
 
-      if(choice.name %in% choices_per_data_column[[question.name.sans.choice]]$name){
-        return(TRUE)
-      }
-      return(FALSE)
     }
 
     as.data.frames<-function(){
