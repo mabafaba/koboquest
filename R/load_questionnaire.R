@@ -15,7 +15,7 @@ hasdata<-function (x, return.index = F) {
 #' load_questionnaire
 #' @param data data frame containing the data matching the questionnaire to be loaded.
 #' @param questions kobo form question sheet; either as a data frame, or a single character string with the name of a csv file
-#' @param choices.file questions kobo form choices sheet; either as a data frame, or a single character string with the name of a csv file
+#' @param choices questions kobo form choices sheet; either as a data frame, or a single character string with the name of a csv file
 #' @param choices.label.column.to.use The choices table has (sometimes multiple) columns with labels. They are often called "Label::English" or similar. Here you need to provide the _name of the column_ that you want to use for labels (see example!)
 #' @return A list containing the original questionnaire questions and choices, the choices matched 1:1 with the data columns, and all functions created by this function relating to the specific questionnaire
 #' @export
@@ -37,12 +37,12 @@ load_questionnaire<-function(data,
   # load files
   if(is.vector(questions)){
     if(length(questions)==1){
-      questions <- read.csv.auto.sep(questions.file,stringsAsFactors = F, header = T)
+      questions <- read.csv.auto.sep(questions,stringsAsFactors = F, header = T)
     }
   }else{if(!is.data.frame(questions)){stop("questions must either be a data frame or a csv file name")}}
   if(is.vector(choices)){
     if(length(choices)==1){
-      choices <- read.csv.auto.sep(choices.file, stringsAsFactors = F, header = T)
+      choices <- read.csv.auto.sep(choices, stringsAsFactors = F, header = T)
     }
   }else{if(!is.data.frame(questions)){stop("choices must either be a data frame or a csv file name")}}
 

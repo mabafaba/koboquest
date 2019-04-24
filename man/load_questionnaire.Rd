@@ -4,7 +4,7 @@
 \alias{load_questionnaire}
 \title{load_questionnaire}
 \usage{
-load_questionnaire(data, questions.file, choices.file,
+load_questionnaire(data, questions, choices,
   choices.label.column.to.use = NULL)
 }
 \arguments{
@@ -25,8 +25,8 @@ load_questionnaire
 \examples{
 
 load_questionnaire(mydata,
-                  questions.file="koboquestions.csv",
-                  choices.file="kobochoices.csv",
+                  questions = "koboquestions.csv",
+                  choices = "kobochoices.csv",
                   choices.label.column.to.use="Label::English")
 
 

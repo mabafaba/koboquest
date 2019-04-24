@@ -21,16 +21,16 @@ test_that("load_questionnaire: fail on bad input",{
 
   good_parameters<-list(
                         example.data.path("example1"),
-                        questions.file = paste0(example1$path,"kobo_questions.csv"),
-                        choices.file = paste0(example1$path,"kobo_choices.csv"),
+                        questions = paste0(example1$path,"kobo_questions.csv"),
+                        choices = paste0(example1$path,"kobo_choices.csv"),
                         choices.label.column.to.use = example1$choice.label.column.to.use)
 
 
   bad_parameters<-rep(list(good_parameters),10)
-  bad_parameters[[1]]$questions.file<-"not_a_file"
-  bad_parameters[[2]]$questions.file<-NA
-  bad_parameters[[3]]$choices.file<-"not_a_file"
-  bad_parameters[[4]]$choices.file<-NA
+  bad_parameters[[1]]$questions<-"not_a_file"
+  bad_parameters[[2]]$questions<-NA
+  bad_parameters[[3]]$choices<-"not_a_file"
+  bad_parameters[[4]]$choices<-NA
   bad_parameters[[5]]$choices.label.column.to.use<-NA
   # 2-9
   expect_error(do.call(load_questionnaire,c(bad_paramters[[1]],data=list(example1$data))))
