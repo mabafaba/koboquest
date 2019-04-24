@@ -10,24 +10,18 @@ load_questionnaire(data, questions, choices,
 \arguments{
 \item{data}{data frame containing the data matching the questionnaire to be loaded.}
 
-\item{questions.file}{file name of a csv file containing the kobo form's question sheet}
+\item{questions}{kobo form question sheet; either as a data frame, or a single character string with the name of a csv file}
 
-\item{choices.file}{file name of a csv file containing the kobo form's choices sheet}
+\item{choices}{questions kobo form choices sheet; either as a data frame, or a single character string with the name of a csv file}
 
-\item{choices.label.column.to.use}{The choices csv file has (sometimes multiple) columns with labels. They are often called "Label::English" or similar. Here you need to provide the _name of the column_ that you want to use for labels (see example!)}
+\item{choices.label.column.to.use}{The choices table has (sometimes multiple) columns with labels. They are often called "Label::English" or similar. Here you need to provide the _name of the column_ that you want to use for labels (see example!)}
 }
 \value{
-A list containing the original questionnaire questions and choices, the choices matched 1:1 with the data columns, and all functions created by this function relating to the specific questionnaire (they are written to the global space too, but you can use these when using multiple questionnaires in parallel.)
+A list containing the original questionnaire questions and choices, the choices matched 1:1 with the data columns, and all functions created by this function relating to the specific questionnaire
 }
 \description{
 load_questionnaire
 }
 \examples{
-
-load_questionnaire(mydata,
-                  questions = "koboquestions.csv",
-                  choices = "kobochoices.csv",
-                  choices.label.column.to.use="Label::English")
-
 
 }
