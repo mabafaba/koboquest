@@ -91,7 +91,7 @@ rify_logical_operators<-function(x){
 rify_selected<-function(x){
   # define patterns
   varname_chars_pattern<-"[A-z0-9_\\.]*"
-  choices_chars_pattern<-"[a-z0-9_]*"
+  choices_chars_pattern<-"[A-z0-9_]*"
   selected_start_pattern<-"selected[[:space:]]*\\([[:space:]]*\\$\\{"
   selected_middle_pattern<-"\\}[[:space:]]*,[[:space:]]*[\"']*"
   selected_end_pattern<-"[\"']*\\)"
