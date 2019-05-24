@@ -113,7 +113,7 @@ load_questionnaire<-function(data,
    question_get_choice_labels <- function(responses,variable.name){
 
      variable.name<-as.character(variable.name)
-     question.name<-to_alphanumeric_lowercase(question.name)
+     variable.name<-to_alphanumeric_lowercase(variable.name)
 
      responses<-as.character(responses)
       if(question_is_categorical(variable.name)){
