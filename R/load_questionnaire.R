@@ -113,6 +113,8 @@ load_questionnaire<-function(data,
    question_get_choice_labels <- function(responses,variable.name){
 
      variable.name<-as.character(variable.name)
+     question.name<-to_alphanumeric_lowercase(question.name)
+
      responses<-as.character(responses)
       if(question_is_categorical(variable.name)){
       labels<-replace_with_lookup_table(
@@ -130,7 +132,7 @@ load_questionnaire<-function(data,
 
    question_get_question_label<-function(variable.names){
      variable.names<-as.character(variable.names)
-
+     variable.names<-to_alphanumeric_lowercase(variable.names)
      labelcol<-grep("label",names(questions))[1]
      questionnaire_rows<-match(variable.names,questions[,"name"])
      questionnaire_rows[is.na(variable.names)]<-NA
@@ -145,9 +147,12 @@ load_questionnaire<-function(data,
 
 
     question_is_numeric <- function(question.name){
+      question.name<-to_alphanumeric_lowercase(question.name)
       if(is.null(question.name)){return(FALSE)}
       if(is.na(question.name)){return(FALSE)}
       if(question.name==""){return(FALSE)}
+      question.name<-to_alphanumeric_lowercase(question.name)
+
       qid<-which(questions$name==question.name)
       if(length(qid)==0){return(FALSE)}
       if(length(c(grep("integer",questions$type[qid]),grep("decimal", questions$typep[qid]), grep("calculate", questions$type[qid])))>0){return(TRUE)}
@@ -159,6 +164,8 @@ load_questionnaire<-function(data,
       if(is.null(question.name)){return(FALSE)}
       if(is.na(question.name)){return(FALSE)}
       if(question.name==""){return(FALSE)}
+      question.name<-to_alphanumeric_lowercase(question.name)
+
       if(!(question.name %in% questions$name)){return(FALSE)}
       qid<-which(questions$name==question.name)
       if(length(grep("select_one",questions$type[qid]))>0){return(TRUE)}
@@ -169,6 +176,8 @@ load_questionnaire<-function(data,
       if(is.null(question.name)){return(FALSE)}
       if(is.na(question.name)){return(FALSE)}
       if(question.name==""){return(FALSE)}
+      question.name<-to_alphanumeric_lowercase(question.name)
+
       if(!(question.name %in% questions$name)){return(FALSE)}
       qid<-which(questions$name==question.name)
       if(length(grep("select_multiple",questions$type[qid]))>0){return(TRUE)}
@@ -179,6 +188,8 @@ load_questionnaire<-function(data,
       if(is.null(question.name)){return(FALSE)}
       if(is.na(question.name)){return(FALSE)}
       if(question.name==""){return(FALSE)}
+      question.name<-to_alphanumeric_lowercase(question.name)
+
       return(question_is_select_one(question.name) | question_is_select_multiple(question.name))
     }
 
@@ -186,6 +197,7 @@ load_questionnaire<-function(data,
       if(is.null(question.name)){stop("question.name can not be NULL")}
       if(question.name %in% c(NA,"","N/A","NA")){stop("question.name can not be empty")}
       if(length(question.name)!=1){stop("question_in_questionnaire() takes only a single variable name as input")}
+      question.name<-to_alphanumeric_lowercase(question.name)
 
       if(sum(question.name %in% questions$name) > 0){
         return(TRUE)}
@@ -193,6 +205,7 @@ load_questionnaire<-function(data,
     }
 
     question_is_skipped <- function(data, question.name){
+      question.name<-to_alphanumeric_lowercase(question.name)
       qid<-which(as.character(questions$name)==as.character(question.name))
       condition<-questions$relevant[qid[1]]
       question_is_skipped_apply_condition_to_data(data,condition)
@@ -263,6 +276,9 @@ load_questionnaire<-function(data,
     # moved inside here to avoid dependence on global closure with 'assignInNamespace'
 
     question_type<-function(variable.name,data=NULL,from.questionnaire=T,from.data=T){
+      if(is.null(variable.name)){stop("variable name can not be NULL")}
+      if(is.na(variable.name)){stop("variable name can not be NA")}
+      variable.name<-to_alphanumeric_lowercase(as.character(variable.name))
       if(!from.questionnaire & !from.data){stop("at least one of 'from.questionnaire' or 'from.data' parameters must be 'TRUE'.")}
       if(is.null(data) & from.data & !from.questionnaire){
         stop("to infer data types from data, provide 'data' parameter. alternatively, use 'from.questionnaire=TRUE'.")
