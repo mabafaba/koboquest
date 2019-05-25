@@ -57,10 +57,13 @@ question_is_skipped_apply_condition_to_data<-function(data,condition){
 
 
 rify_condition<-function(x){
-  x %>% rify_selected %>% rify_logical_operators %>% rify_varnames_in_string
+  x <- x %>% rify_selected %>% rify_logical_operators %>% rify_varnames_in_string %>% rify_if_to_ifelse
+
 }
 
-
+rify_if_to_ifelse<-function(x){
+  gsub("if[[:space:]]*\\(","ifelse(",x)
+}
 
 
 rify_varnames_in_string<-function(x){
