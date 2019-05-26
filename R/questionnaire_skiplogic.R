@@ -27,8 +27,24 @@ question_is_skipped_apply_condition_to_data<-function(data,condition){
   # parse the condition into an R expression:
   condition_rexpression<-rify_condition(condition)
 
-  # run the r expression:
+  # add functions typically used in kobo forms:
   not<-function(x){!x}
+  coalesce<-function(x,y){
+    if(is.na(x) | x==""){
+      return(y)
+    }
+    return(x)
+  }
+
+  # run the r expression:
+
+
+
+
+
+
+
+
   relevant<-with(data,{
   relevant<-tryCatch({
     relevant<-condition_rexpression %>% parse(text = .) %>% eval

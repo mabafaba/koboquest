@@ -57,6 +57,7 @@ load_questionnaire<-function(data,
   if(is.null(choices.label.column.to.use)){
     choices.label.column.to.use<-grep("label",names(choices),value = T)
     if(length(choices.label.column.to.use)==0){stop("No column in the choices file contains the word 'label', so you have to provide the exact name of the column to use as labels in the `choices.label.column.to.use` parameters.")}
+    choices.label.column.to.use<-choices.label.column.to.use[1]
   }
   choices.label.column.to.use <- to_alphanumeric_lowercase(choices.label.column.to.use)
 
