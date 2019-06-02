@@ -76,6 +76,17 @@ load_questionnaire<-function(data,
   questions$relevant<-add_group_conditions_to_question_conditions(questions)
 
 
+  # remove empty choices
+
+  choices<-choices[!(choices$list_name %in% c("", " ", NA)),]
+  if(nrow(choices)<1){stop("no choice rows (with valid list_name value")}
+  # make choices unique
+  choices <- choices %>%
+    split.data.frame(choices$list_name) %>%
+    change_non_unique_choices(choices.label.column.to.use = choices.label.column.to.use) %>%
+    do.call(rbind,.)
+
+
   # preserve questions data frame
   questions_as_df<-questions
   choices_as_df<-choices
