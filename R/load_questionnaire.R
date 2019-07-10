@@ -120,7 +120,17 @@ load_questionnaire<-function(data,
     names(choices_per_data_column)<- data_colnames
 
 
+
     # make functions that need questionnaire
+    question_get_choices<- function(variable.name){
+      variable.name<-as.character(variable.name)
+      variable.name<-to_alphanumeric_lowercase(variable.name)
+
+      choices_per_data_column[[variable.name]][["name"]]
+
+    }
+
+
 
    question_get_choice_labels <- function(responses,variable.name){
 
@@ -345,6 +355,7 @@ load_questionnaire<-function(data,
              is_questionnaire_loaded=is_questionnaire_loaded,
              question_is_sm_choice=question_is_sm_choice,
              choices_for_select_multiple=choices_for_select_multiple,
+             question_get_choices= question_get_choices,
              question_get_choice_labels=question_get_choice_labels,
              question_get_question_label=question_get_question_label,
              raw_questionnaire=as.data.frames))
