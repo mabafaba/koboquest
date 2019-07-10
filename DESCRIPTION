@@ -1,8 +1,9 @@
 Package: koboquest
 Title: Reads and understands kobo questionnaires
 Version: 1.0.1
-Authors@R: c(person("Martin", "Barner", email = "martin.barner@impact-initiatives.org", role = c("aut", "cre").
-  person("Zack", "Arno", email = "zack.arno@reach-initiative.org", role = "aut"))
+Authors@R: c(
+    person("Martin", "Barner", email = "martin.barner@impact-initiatives.org", role = c("aut", "cre")),
+    person("Zack", "Arno", email = "zack.arno@reach-initiative.org", role = "aut"))
 Description: Use kobo questionnaires to identify data types, parse skip logic and apply labels. 
 Depends:
   data.table,
