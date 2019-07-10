@@ -49,6 +49,9 @@ load_questionnaire<-function(data,
   # harmonise data column references
   names(questions) <- to_alphanumeric_lowercase(names(questions))
   names(choices) <- to_alphanumeric_lowercase(names(choices))
+  choices$names<-trimws(as.character(choices$names))
+  questions$relevant<-as.character(questions$relevant)
+
   names(data) <- to_alphanumeric_lowercase(names(data))
 
 
