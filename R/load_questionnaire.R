@@ -328,7 +328,7 @@ load_questionnaire<-function(data,
       }
 
       # Guess from data:
-
+      names(data)<-to_alphanumeric_lowercase(names(data))
       if(!all(variable.name%in%names(data))){stop("Can not determine the data type: it's neither in the questionnaire nor in the data column headers")}
       if(is.numeric(data[[variable.name]])){return("numeric")}
       return("select_one")
